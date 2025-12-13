@@ -1,0 +1,79 @@
+{
+	"name": "n8n-nodes-usebouncer",
+	"version": "1.0.0",
+	"description": "Bouncer E-Mail verification custom node for n8n",
+	"keywords": [
+		"n8n-community-node-package",
+		"email",
+		"email verification",
+		"email validator",
+		"email validation",
+		"email checker",
+		"bounce",
+		"bounce rate",
+		"bouncer",
+		"usebouncer",
+		"deliverability",
+		"list cleaning",
+		"bulk email verification",
+		"api",
+		"saas",
+		"marketing automation"
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/hansdoebel/n8n-nodes-bouncer#readme",
+	"author": {
+		"name": "Hans Doebel",
+		"email": "dev@hansdoebel.de"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hansdoebel/n8n-nodes-bouncer.git"
+	},
+	"bugs": {
+		"url": "https://github.com/hansdoebel/n8n-nodes-bouncer/issues"
+	},
+	"engines": {
+		"node": ">=18.10",
+		"pnpm": ">=9.1"
+	},
+	"packageManager": "pnpm@10.25.0",
+	"main": "index.js",
+	"scripts": {
+		"preinstall": "npx only-allow pnpm",
+		"build": "tsc && gulp build:icons",
+		"dev": "tsc --watch",
+		"format": "prettier nodes credentials --write",
+		"lint": "eslint nodes credentials package.json",
+		"lintfix": "eslint nodes credentials package.json --fix",
+		"prepublishOnly": "pnpm build && pnpm lint -c .eslintrc.prepublish.js nodes credentials package.json"
+	},
+	"files": [
+		"dist"
+	],
+	"funding": {
+		"type": "buymeacoffee",
+		"url": "https://buymeacoffee.com/hansdoebel"
+	},
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/BouncerApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Bouncer/Bouncer.node.js"
+		]
+	},
+	"devDependencies": {
+		"@types/node": "^22.19.2",
+		"@typescript-eslint/parser": "^7.18.0",
+		"eslint": "^8.57.1",
+		"eslint-plugin-n8n-nodes-base": "^1.16.4",
+		"gulp": "^4.0.2",
+		"prettier": "^3.7.4",
+		"typescript": "^5.9.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
