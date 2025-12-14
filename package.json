@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-usebouncer",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Bouncer E-Mail verification custom node for n8n",
 	"keywords": [
 		"n8n-community-node-package",
