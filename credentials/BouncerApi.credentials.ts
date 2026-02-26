@@ -6,15 +6,15 @@ import type {
 } from "n8n-workflow";
 
 const API_BASE_URL = "https://api.usebouncer.com/v1.1";
-const DOCUMENTATION_URL =
-  "https://docs.usebouncer.com/quick-start#authentication";
 
 export class BouncerApi implements ICredentialType {
   name = "bouncerApi";
 
   displayName = "Bouncer API";
 
-  documentationUrl = DOCUMENTATION_URL;
+  icon = "file:../icons/bouncer.svg" as const;
+
+  documentationUrl = "https://docs.usebouncer.com/quick-start#authentication";
 
   properties: INodeProperties[] = [
     {

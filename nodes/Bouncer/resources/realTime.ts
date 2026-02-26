@@ -1,5 +1,5 @@
 import type { INodeProperties } from "n8n-workflow";
-import { RATE_LIMITS, TIMEOUTS } from "../../utils";
+import { RATE_LIMITS, TIMEOUTS } from "../utils";
 
 export const realTimeOperations: INodeProperties[] = [
   {

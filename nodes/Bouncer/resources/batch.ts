@@ -1,5 +1,5 @@
 import type { INodeProperties } from "n8n-workflow";
-import { BATCH_SIZES, DOWNLOAD_FILTER, RATE_LIMITS } from "../../utils";
+import { BATCH_SIZES, DOWNLOAD_FILTER, RATE_LIMITS } from "../utils";
 
 export const batchOperations: INodeProperties[] = [
   {

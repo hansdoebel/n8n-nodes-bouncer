@@ -13,14 +13,15 @@ import {
   toxicityFields,
   toxicityOperations,
 } from "./resources";
-import { API_BASE_URL, buildResourceProperties, RESOURCES } from "./utils";
+import { API_BASE_URL, buildResourceProperties } from "./utils";
 
 export class Bouncer implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Bouncer",
     name: "bouncer",
-    icon: "file:bouncer.svg",
+    icon: "file:../../icons/bouncer.svg",
     group: ["transform"],
+    usableAsTool: true,
     version: 1,
     subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
     description: "Interact with the Bouncer E-Mail Verification API",
@@ -48,7 +49,14 @@ export class Bouncer implements INodeType {
         name: "resource",
         type: "options",
         noDataExpression: true,
-        options: RESOURCES,
+        options: [
+          { name: "Batch", value: "batch" },
+          { name: "Batch Sync", value: "batchSync" },
+          { name: "Credit", value: "credit" },
+          { name: "Domain", value: "domain" },
+          { name: "Real Time", value: "realTime" },
+          { name: "Toxicity", value: "toxicity" },
+        ],
         default: "credit",
       },
       ...buildResourceProperties([

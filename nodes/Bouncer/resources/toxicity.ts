@@ -1,5 +1,5 @@
 import type { INodeProperties } from "n8n-workflow";
-import { API_BASE_URL_V1, RATE_LIMITS } from "../../utils";
+import { API_BASE_URL_V1, RATE_LIMITS } from "../utils";
 
 export const toxicityOperations: INodeProperties[] = [
   {

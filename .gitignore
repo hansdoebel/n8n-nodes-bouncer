@@ -1,9 +1,22 @@
+# Agent
+.claude/
+
+# Dependencies
 node_modules
+
+# Build output
+dist
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+
+# Test
+coverage/
+
+# OS
 .DS_Store
+
+# Temp
 .tmp
 tmp
-dist
-npm-debug.log*
-yarn.lock
-.vscode/launch.json
-coverage/

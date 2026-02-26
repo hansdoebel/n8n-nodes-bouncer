@@ -1,143 +1,178 @@
-# n8n-nodes-bouncer
+<h1 align="center">
+  <br>
+  n8n-nodes-bouncer
+  <br>
+</h1>
 
-[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
+<p align="center">
+	<img alt="NPM Version" src="https://img.shields.io/npm/v/n8n-nodes-usebouncer">
+	<img alt="GitHub License" src="https://img.shields.io/github/license/hansdoebel/n8n-nodes-bouncer">
+	<img alt="NPM Downloads" src="https://img.shields.io/npm/dm/n8n-nodes-usebouncer">
+	<img alt="NPM Last Update" src="https://img.shields.io/npm/last-update/n8n-nodes-usebouncer">
+	<img alt="Static Badge" src="https://img.shields.io/badge/n8n-2.9.4-EA4B71?logo=n8n">
+</p>
 
-This is a custom n8n community node providing a complete integration with the Bouncer E-Mail Verification API.
+<p align="center">
+  <a href="#installation">Installation</a> |
+  <a href="#credentials">Credentials</a> |
+  <a href="#resources">Resources</a> |
+  <a href="#testing-with-sandbox-emails">Sandbox Emails</a> |
+  <a href="#limitations">Limitations</a> |
+  <a href="#development">Development</a>
+</p>
 
-## Table of Contents
+---
 
-- [Features](#features)
-- [Installation](#installation)
-- [Authentication](#authentication)
-- [Testing with Sandbox Emails](#testing-with-sandbox-emails)
-- [Resources](#resources)
-- [Version History](#version-history)
+A community node for [n8n](https://n8n.io/) that integrates with the [Bouncer](https://www.usebouncer.com/) E-Mail Verification API. Verify emails in real-time, run batch verifications, check domains, and detect toxic addresses.
 
-## Features
+## API Coverage
 
-### Real-Time Verification
-- **Verify E-Mail**: Verify single email address in real-time with configurable timeout (1-30 seconds)
-- Perfect for signup forms and real-time validation
-- Rate limit: 200 requests/minute
+The table below shows which endpoints are currently implemented:
 
-### Batch Verification (Asynchronous)
-- **Create Batch Request**: Verify up to 50,000 emails in offline manner
-- **Check Status**: Monitor batch verification progress with optional statistics
-- **Get Results**: Download verification results as JSON with filtering options (all, deliverable, risky, undeliverable, unknown)
-- **Finish**: Complete processing early and reclaim credits for unverified emails
-- **Delete Request**: Remove batch data and results
-- Recommended batch size: 50,000-1,000,000 emails
-- Optional webhook callback when processing completes
-- Rate limit: 60 batches/minute
+<details>
+<summary><strong>View all endpoints</strong></summary>
 
-### Batch Verification (Synchronous)
-- **Verify E-Mails**: Verify up to 50 emails synchronously with immediate results
-- Ideal for small batches requiring instant feedback
-- Rate limit: 60 requests/minute
+| API Resource               | Endpoint                  | Status  | Operations                                                  |
+| -------------------------- | ------------------------- | ------- | ----------------------------------------------------------- |
+| **Real-Time Verification** | `/v1/email/verify`        | ✅ Full | Verify E-Mail                                               |
+| **Batch (Async)**          | `/v1.1/email/verify/batch`| ✅ Full | Create, Check Status, Get Results, Finish, Delete           |
+| **Batch (Sync)**           | `/v1/email/verify/batch`  | ✅ Full | Verify E-Mails                                              |
+| **Domain Verification**    | `/v1/domain/verify`       | ✅ Full | Verify Domain                                               |
+| **Toxicity Check**         | `/v1/toxicity`            | ✅ Full | Create List Job, Check Status, Download Results, Delete Job |
+| **Credits**                | `/v1/credits`             | ✅ Full | Get Available Credits                                       |
 
-### Domain Verification
-- **Verify Domain**: Check domain validity and mail server configuration
-- Validate domain-level email deliverability
-- Rate limit: 200 requests/minute
-
-### Toxicity Check
-- **Create List Job**: Submit email list for toxicity analysis
-- **Check Status**: Monitor toxicity check progress
-- **Download Results**: Retrieve toxicity analysis results
-- **Delete Job**: Remove toxicity check data
-- Identify potentially harmful or spam email addresses
-- Rate limit: 60 lists/minute
-
-### Credits Management
-- **Get Available Credits**: Check your remaining Bouncer API credits
-
-### Technical Features
-- **Declarative Style**: Uses n8n's declarative routing for simplified API integration
-- **Type-Safe**: Written in TypeScript with full type definitions
-- **Comprehensive Error Handling**: Robust error messages and validation
-- **Built with n8n Best Practices**: Follows official n8n community node guidelines
+</details>
 
 ## Installation
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
+1. Make a new workflow or open an existing one
+2. Open the nodes panel by selecting **+** or pressing **Tab**
+3. Search for **Bouncer**
+4. Select **Install** to install the node for your instance
 
-1. Go to **Settings** > **Community Nodes.**
-2. Select **Install.**
-3. Enter the npm package name: `n8n-nodes-usebouncer`
-4. Agree to the risks of using community nodes: select **I understand the risks of installing unverified code from a public source.**
-5. Select **Install.** n8n installs the node and returns to the Community Nodes list in Settings.
-
-## Authentication
-
-This node uses the Bouncer API key for authentication.
-
-### Getting Your API Key
+## Credentials
 
 1. Sign up for a [Bouncer account](https://www.usebouncer.com/)
-2. Navigate to your account settings
-3. Find your API key in the API section
-4. Copy the API key
-
-### Configuring in n8n
-
-1. In your n8n workflow, add the Bouncer node
-2. Click on **Create New Credentials**
-3. Enter your API key
-4. Click **Save** to test and save the credentials
-
-The node will automatically include your API key in the `x-api-key` header for all requests.
-
-## Testing with Sandbox Emails
-
-Bouncer provides free sandbox email addresses that you can use to test the integration **without consuming credits**. These are perfect for development and testing your workflows.
-
-### Available Sandbox Emails
-
-| Email Address | Expected Result |
-|---------------|-----------------|
-| `deliverable@sandbox.usebouncer.com` | Returns `deliverable` status |
-| `undeliverable@sandbox.usebouncer.com` | Returns `undeliverable` status |
-| `unknown@sandbox.usebouncer.com` | Returns `unknown` status |
-| `accept-all@sandbox.usebouncer.com` | Returns `risky` status (accept-all domain) |
-| `disposable@sandbox.usebouncer.com` | Returns `risky` status (disposable email) |
-| `free@sandbox.usebouncer.com` | Returns deliverable with `free` provider flag |
-| `other@sandbox.usebouncer.com` | Returns with various attributes |
-
-### Using the Plus (+) Suffix
-
-You can modify any sandbox email with a `+` suffix to generate unique test addresses without consuming credits:
-
-```
-deliverable+test1@sandbox.usebouncer.com
-deliverable+test2@sandbox.usebouncer.com
-undeliverable+mytest@sandbox.usebouncer.com
-```
-
-### Example Test Workflow
-
-1. Add the Bouncer node to your workflow
-2. Select **Real Time** as the Resource
-3. Select **Verify E-Mail** as the Operation
-4. Enter `deliverable@sandbox.usebouncer.com` as the email
-5. Execute the node - you should see a `deliverable` status response
-6. Test other sandbox emails to see different response scenarios
-
-**Note:** Sandbox emails work with all verification endpoints (Real-Time, Batch, Batch Sync) and don't count against your credit balance.
+2. Navigate to your account settings and find your API key in the API section
+3. In n8n, go to **Credentials** > **Add credential**
+4. Search for **Bouncer API** and paste your key
 
 ## Resources
 
-- [n8n Website](https://n8n.io/)
-- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
-- [Bouncer Website](https://www.usebouncer.com/)
-- [Bouncer API Documentation](https://docs.usebouncer.com/introduction)
-- [Bouncer API Reference](https://docs.usebouncer.com/api-reference/)
-- [GitHub Repository](https://github.com/hansdoebel/n8n-nodes-bouncer)
+<details>
+<summary><strong>Real-Time Verification</strong></summary>
 
-## Version History
+| Operation    | Description                                                                  |
+| ------------ | ---------------------------------------------------------------------------- |
+| Verify E-Mail | Verify a single email address in real-time with configurable timeout (1-30s) |
 
-- `1.0.0` – Complete implementation with all Bouncer API operations
-  - Real-Time E-Mail Verification
-  - Batch E-Mail Verification
-  - Domain Verification
-  - Toxicity Check
-  - Credits Management
+Rate limit: 200 requests/minute
+
+</details>
+
+<details>
+<summary><strong>Batch Verification (Async)</strong></summary>
+
+| Operation    | Description                                                       |
+| ------------ | ----------------------------------------------------------------- |
+| Create       | Submit up to 50,000 emails for offline verification               |
+| Check Status | Monitor batch verification progress with optional statistics      |
+| Get Results  | Download results as JSON with filtering (all, deliverable, risky, undeliverable, unknown) |
+| Finish       | Complete processing early and reclaim credits for unverified emails |
+| Delete       | Remove batch data and results                                     |
+
+Rate limit: 60 batches/minute. Recommended batch size: 50,000–1,000,000 emails. Optional webhook callback on completion.
+
+</details>
+
+<details>
+<summary><strong>Batch Verification (Sync)</strong></summary>
+
+| Operation     | Description                                          |
+| ------------- | ---------------------------------------------------- |
+| Verify E-Mails | Verify up to 50 emails synchronously with immediate results |
+
+Rate limit: 60 requests/minute
+
+</details>
+
+<details>
+<summary><strong>Domain Verification</strong></summary>
+
+| Operation     | Description                                          |
+| ------------- | ---------------------------------------------------- |
+| Verify Domain | Check domain validity and mail server configuration  |
+
+Rate limit: 200 requests/minute
+
+</details>
+
+<details>
+<summary><strong>Toxicity Check</strong></summary>
+
+| Operation        | Description                              |
+| ---------------- | ---------------------------------------- |
+| Create List Job  | Submit email list for toxicity analysis  |
+| Check Status     | Monitor toxicity check progress          |
+| Download Results | Retrieve toxicity analysis results       |
+| Delete Job       | Remove toxicity check data               |
+
+Rate limit: 60 lists/minute
+
+</details>
+
+<details>
+<summary><strong>Credits</strong></summary>
+
+| Operation            | Description                          |
+| -------------------- | ------------------------------------ |
+| Get Available Credits | Check your remaining Bouncer API credits |
+
+</details>
+
+## Testing with Sandbox Emails
+
+Bouncer provides free sandbox email addresses for testing **without consuming credits**.
+
+<details>
+<summary><strong>View sandbox emails</strong></summary>
+
+| Email Address                          | Expected Result                          |
+| -------------------------------------- | ---------------------------------------- |
+| `deliverable@sandbox.usebouncer.com`   | Returns `deliverable` status             |
+| `undeliverable@sandbox.usebouncer.com` | Returns `undeliverable` status           |
+| `unknown@sandbox.usebouncer.com`       | Returns `unknown` status                 |
+| `accept-all@sandbox.usebouncer.com`    | Returns `risky` status (accept-all)      |
+| `disposable@sandbox.usebouncer.com`    | Returns `risky` status (disposable)      |
+| `free@sandbox.usebouncer.com`          | Returns deliverable with `free` provider |
+| `other@sandbox.usebouncer.com`         | Returns with various attributes          |
+
+You can modify any sandbox email with a `+` suffix to generate unique test addresses: `deliverable+test1@sandbox.usebouncer.com`
+
+</details>
+
+## Limitations
+
+- Async batch verification: max 50,000 emails per request
+- Sync batch verification: max 50 emails per request
+- Real-time verification timeout: 1–30 seconds
+
+## Development
+
+```bash
+git clone https://github.com/hansdoebel/n8n-nodes-bouncer.git
+cd n8n-nodes-bouncer
+npm install
+npm build
+npm lint
+```
+
+## License
+
+[MIT](LICENSE)
+
+<p align="center">
+  <a href="https://github.com/hansdoebel/n8n-nodes-bouncer">GitHub</a> |
+  <a href="https://github.com/hansdoebel/n8n-nodes-bouncer/issues">Issues</a> |
+  <a href="https://docs.usebouncer.com/introduction">Bouncer Docs</a>
+</p>

@@ -88,30 +88,3 @@ export const SANDBOX_EMAILS = {
   UNKNOWN: "unknown@sandbox.usebouncer.com",
   OTHER: "other@sandbox.usebouncer.com",
 } as const;
-
-export const RESOURCES = [
-  {
-    name: "Batch",
-    value: "batch",
-  },
-  {
-    name: "Batch Sync",
-    value: "batchSync",
-  },
-  {
-    name: "Credit",
-    value: "credit",
-  },
-  {
-    name: "Domain",
-    value: "domain",
-  },
-  {
-    name: "Real Time",
-    value: "realTime",
-  },
-  {
-    name: "Toxicity",
-    value: "toxicity",
-  },
-];
